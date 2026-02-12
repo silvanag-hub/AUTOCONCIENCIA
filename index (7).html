@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Autoconciencia · 2026</title>
+<meta name="description" content="Programa personal de autoconciencia y control de impulsos">
+<meta name="theme-color" content="#0abf8c">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- iOS / Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Autoconciencia">
+<!-- manifest & icons injected by JS below -->
+<meta name="application-name" content="Autoconciencia">
+<meta name="msapplication-TileColor" content="#0abf8c">
+<meta name="msapplication-config" content="none">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0abf8c;--sky:#05c3de;--ocean:#0891b2;
+  --mint:#ccfbf1;--mint2:#e8fdf8;
+  --surface:#f4fdfb;--card:#fff;--text:#0f3d36;--muted:#5e9e8e;--border:#c8f0e8;
+  --danger:#ef4444;--warn:#f59e0b;--purple:#8b5cf6;
+  --shadow:0 8px 32px rgba(10,191,140,.15);--shadow2:0 2px 12px rgba(10,191,140,.10);
+  --radius:18px;--rsm:10px;--nav-h:74px;
+  --grad:linear-gradient(135deg,#0abf8c 0%,#05c3de 60%,#0891b2 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'Nunito',sans-serif;background:var(--surface);color:var(--text);overscroll-behavior:none;}
+
+/* ── SPLASH ───────────────────────────────── */
+#splash{position:fixed;inset:0;z-index:9999;background:var(--grad);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s,visibility .7s;}
+#splash.hide{opacity:0;visibility:hidden;}
+.sp-ring{width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.15);border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:60px;animation:pulse-ring 2s ease-in-out infinite;margin-bottom:28px;}
+@keyframes pulse-ring{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,.3);}50%{transform:scale(1.05);box-shadow:0 0 0 16px rgba(255,255,255,0);}}
+.sp-title{font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:5px;animation:su .9s ease both;}
+.sp-sub{font-size:13px;color:rgba(255,255,255,.85);font-weight:700;letter-spacing:2.5px;text-transform:uppercase;animation:su .9s .15s ease both;}
+.sp-year{margin-top:24px;font-size:68px;font-weight:900;color:rgba(255,255,255,.18);letter-spacing:-2px;animation:su .9s .3s ease both;}
+.sp-mark{position:absolute;bottom:18px;right:18px;font-size:11px;color:rgba(255,255,255,.45);font-weight:700;text-align:right;line-height:1.5;animation:su .9s .4s ease both;}
+@keyframes su{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── ONBOARDING OVERLAY ───────────────────── */
+#onboarding{position:fixed;inset:0;z-index:8000;background:var(--grad);display:flex;align-items:center;justify-content:center;padding:24px;}
+#onboarding.hide{display:none;}
+.ob-card{background:#fff;border-radius:24px;padding:32px 26px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.ob-icon{font-size:52px;text-align:center;margin-bottom:16px;}
+.ob-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--text);text-align:center;margin-bottom:8px;}
+.ob-sub{font-size:14px;color:var(--muted);text-align:center;font-weight:600;line-height:1.6;margin-bottom:24px;}
+.ob-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--rsm);font-size:15px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);-webkit-appearance:none;margin-bottom:12px;}
+.ob-input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,191,140,.12);}
+.ob-avatar-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.ob-av{font-size:32px;width:54px;height:54px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;cursor:pointer;border:2.5px solid transparent;transition:all .2s;}
+.ob-av.sel{border-color:var(--teal);background:var(--mint2);transform:scale(1.1);}
+.ob-goal-row{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.ob-goal{padding:12px 16px;border-radius:var(--rsm);border:2px solid var(--border);background:#fff;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;}
+.ob-goal.sel{border-color:var(--teal);background:var(--mint2);}
+.ob-btn{width:100%;padding:15px;background:var(--grad);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(10,191,140,.35);transition:transform .2s;}
+.ob-btn:hover{transform:translateY(-2px);}
+.ob-step{display:none;}.ob-step.active{display:block;}
+.ob-dots{display:flex;justify-content:center;gap:7px;margin-bottom:22px;}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;}
+.ob-dot.active{background:var(--teal);width:22px;border-radius:4px;}
+
+/* ── PROFILE MODAL ────────────────────────── */
+#profileModal{position:fixed;inset:0;z-index:7000;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;}
+#profileModal.open{display:flex;}
+.pm-sheet{background:#fff;border-radius:24px 24px 0 0;padding:28px 24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideSheet .35s ease both;}
+@keyframes slideSheet{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.pm-drag{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
+.pm-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:20px;background:var(--mint2);border-radius:var(--radius);}
+.pm-avatar{width:64px;height:64px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
+.pm-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--text);}
+.pm-level{font-size:12px;color:var(--teal);font-weight:800;margin-top:3px;}
+.pm-xp-bar{height:6px;background:var(--mint);border-radius:3px;margin-top:8px;overflow:hidden;}
+.pm-xp-fill{height:100%;background:var(--grad);border-radius:3px;transition:width .8s ease;}
+.pm-section{margin-bottom:20px;}
+.pm-sec-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;}
+.pm-badges{display:flex;flex-wrap:wrap;gap:8px;}
+.badge-pill{display:flex;align-items:center;gap:6px;background:var(--mint2);border:1.5px solid var(--border);border-radius:50px;padding:7px 13px;font-size:12px;font-weight:700;color:var(--text);}
+.badge-pill.locked{opacity:.35;filter:grayscale(1);}
+.pm-notif-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.pm-notif-row:last-child{border-bottom:none;}
+.pm-notif-label{font-size:14px;font-weight:700;color:var(--text);}
+.pm-notif-sub{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;}
+.toggle-wrap{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle-wrap input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:12px;cursor:pointer;transition:.3s;}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+input:checked+.toggle-slider{background:var(--teal);}
+input:checked+.toggle-slider::before{transform:translateX(20px);}
+.pm-time-input{padding:8px 12px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);}
+.pm-time-input:focus{outline:none;border-color:var(--teal);}
+.pm-edit-btn{width:100%;padding:13px;background:var(--grad);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;margin-bottom:10px;}
+.pm-danger-btn{width:100%;padding:12px;background:transparent;color:var(--danger);border:2px solid var(--danger);border-radius:var(--radius);font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;}
+
+/* ── NOTIFICATION BANNER ──────────────────── */
+#notifBanner{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);width:100%;max-width:480px;z-index:6000;padding:0 14px;padding-top:env(safe-area-inset-top);transition:transform .4s cubic-bezier(.4,0,.2,1);}
+#notifBanner.show{transform:translateX(-50%) translateY(0);}
+.nb-inner{background:var(--text);color:#fff;border-radius:0 0 18px 18px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);}
+.nb-icon{font-size:22px;flex-shrink:0;}
+.nb-body{flex:1;}
+.nb-title{font-size:13px;font-weight:800;}
+.nb-msg{font-size:12px;opacity:.8;margin-top:2px;font-weight:600;}
+.nb-close{font-size:18px;opacity:.6;cursor:pointer;flex-shrink:0;}
+
+/* ── RECOMMENDATIONS PANEL ────────────────── */
+.reco-card{border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;position:relative;overflow:hidden;}
+.reco-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.1);}
+.reco-urgent{background:linear-gradient(135deg,#f59e0b,#ef4444);}
+.reco-tip{background:linear-gradient(135deg,#0abf8c,#05c3de);}
+.reco-celebrate{background:linear-gradient(135deg,#8b5cf6,#ec4899);}
+.reco-neutral{background:linear-gradient(135deg,#0891b2,#06b6d4);}
+.reco-icon{font-size:26px;margin-bottom:8px;}
+.reco-title{font-size:14px;font-weight:800;color:#fff;margin-bottom:4px;}
+.reco-text{font-size:13px;color:rgba(255,255,255,.9);line-height:1.6;font-weight:600;}
+.reco-action{margin-top:12px;background:rgba(255,255,255,.25);border:none;color:#fff;padding:8px 16px;border-radius:50px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;}
+
+/* ── LAYOUT ───────────────────────────────── */
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--grad);padding:16px 20px 14px;padding-top:calc(16px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(10,191,140,.25);}
+.tb-left{display:flex;flex-direction:column;}
+.tb-title{font-family:'Playfair Display',serif;font-size:19px;color:#fff;font-weight:700;}
+.tb-sub{font-size:11px;color:rgba(255,255,255,.8);font-weight:600;margin-top:2px;}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-avatar{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:2px solid rgba(255,255,255,.4);transition:all .2s;}
+.tb-avatar:hover{transform:scale(1.08);}
+.tb-notif-btn{position:relative;background:rgba(255,255,255,.2);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;}
+.tb-notif-dot{position:absolute;top:4px;right:4px;width:9px;height:9px;background:var(--danger);border-radius:50%;border:2px solid transparent;display:none;}
+.tb-notif-dot.show{display:block;}
+
+main{flex:1;overflow-y:auto;padding:18px 14px calc(var(--nav-h) + 18px);-webkit-overflow-scrolling:touch;}
+.page{display:none;animation:fadeUp .4s ease both;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── BOTTOM NAV ───────────────────────────── */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1.5px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 24px rgba(10,191,140,.10);}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;cursor:pointer;border:none;background:transparent;transition:all .25s;position:relative;}
+.nav-icon{font-size:21px;transition:transform .25s;}
+.nav-label{font-size:9.5px;font-weight:800;margin-top:3px;color:var(--muted);transition:color .25s;letter-spacing:.3px;}
+.nav-item.active .nav-icon{transform:translateY(-3px);}
+.nav-item.active .nav-label{color:var(--teal);}
+.nav-item.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:28px;height:3px;background:var(--teal);border-radius:3px 3px 0 0;}
+
+/* ── COMMON ───────────────────────────────── */
+.sec-title{font-size:22px;font-weight:900;color:var(--text);margin-bottom:4px;letter-spacing:-.3px;}
+.sec-sub{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:18px;}
+.card{background:var(--card);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow2);padding:18px;}
+.save-btn{width:100%;padding:14px;margin-top:6px;background:var(--grad);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(10,191,140,.35);transition:transform .2s,box-shadow .2s;letter-spacing:.3px;}
+.save-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(10,191,140,.45);}
+.save-btn:active{transform:scale(.98);}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:6px;}
+input[type=text],input[type=number],input[type=date],input[type=datetime-local],textarea{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:var(--rsm);font-size:14px;font-family:'Nunito',sans-serif;font-weight:600;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
+input:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,191,140,.12);}
+textarea{min-height:82px;resize:vertical;line-height:1.6;}
+.info-box{background:var(--mint2);border-radius:var(--rsm);padding:13px 15px;margin-bottom:16px;border-left:4px solid var(--teal);}
+.info-box p{font-size:13px;color:var(--text);line-height:1.7;font-weight:600;}
+.info-box p+p{margin-top:3px;}
+.entries-header{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+.entries-header::after{content:'';flex:1;height:1.5px;background:var(--border);border-radius:2px;}
+.entry-card{background:var(--surface);border-radius:var(--rsm);border:1.5px solid var(--border);padding:13px 15px;margin-bottom:9px;position:relative;}
+.entry-date{font-size:11px;font-weight:800;color:var(--teal);letter-spacing:.4px;margin-bottom:7px;}
+.entry-row{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:3px;}
+.entry-row strong{color:var(--ocean);}
+.entry-del{position:absolute;top:11px;right:11px;background:transparent;border:none;font-size:15px;cursor:pointer;opacity:.35;transition:opacity .2s;}
+.entry-del:hover{opacity:1;}
+.empty-state{text-align:center;padding:26px 20px;color:var(--muted);font-size:13px;font-weight:600;}
+.es-icon{font-size:38px;margin-bottom:8px;opacity:.45;}
+
+/* ── HOME PAGE ────────────────────────────── */
+.welcome-banner{background:var(--grad);border-radius:var(--radius);padding:22px 20px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden;}
+.welcome-banner::after{content:'🌊';position:absolute;right:-8px;bottom:-10px;font-size:88px;opacity:.12;transform:rotate(-15deg);}
+.wb-date{font-size:11px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.wb-hi{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;line-height:1.2;}
+.wb-msg{font-size:13px;opacity:.85;font-weight:600;margin-top:7px;line-height:1.6;}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
+.stat-tile{background:var(--grad);border-radius:var(--rsm);padding:12px 6px;text-align:center;color:#fff;box-shadow:var(--shadow2);transition:transform .2s;}
+.stat-tile:hover{transform:translateY(-2px);}
+.stat-num{font-size:26px;font-weight:900;line-height:1;}
+.stat-lbl{font-size:9px;font-weight:700;opacity:.85;margin-top:3px;letter-spacing:.3px;line-height:1.3;}
+.progress-card{background:var(--card);border-radius:var(--radius);border:1.5px solid var(--border);padding:18px;box-shadow:var(--shadow2);margin-bottom:20px;display:flex;align-items:center;gap:16px;}
+.ring-wrap{position:relative;width:70px;height:70px;flex-shrink:0;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--mint);stroke-width:7;}
+.ring-fg{fill:none;stroke:url(#rg);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .8s ease;}
+.ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:var(--teal);}
+.pi-title{font-size:15px;font-weight:800;color:var(--text);}
+.pi-sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;}
+.p-bar-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.p-lbl{font-size:10px;font-weight:700;color:var(--muted);width:52px;}
+.p-track{flex:1;height:5px;background:var(--mint);border-radius:3px;overflow:hidden;}
+.p-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--sky));transition:width .8s ease;}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.qa-card{background:var(--card);border-radius:var(--radius);border:1.5px solid var(--border);padding:16px 14px;display:flex;flex-direction:column;gap:7px;cursor:pointer;transition:all .25s;box-shadow:var(--shadow2);}
+.qa-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+.qa-emoji{font-size:26px;}
+.qa-title{font-size:13px;font-weight:800;color:var(--text);}
+.qa-sub{font-size:11px;color:var(--muted);font-weight:600;}
+
+/* ── MODULES ──────────────────────────────── */
+.module-grid{display:flex;flex-direction:column;gap:12px;}
+.module-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow2);overflow:hidden;border:1.5px solid var(--border);transition:box-shadow .25s,transform .25s;}
+.module-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+.module-header{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;user-select:none;}
+.mod-icon{width:46px;height:46px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.mod-morning .mod-icon{background:linear-gradient(135deg,#fde68a,#f59e0b);}
+.mod-abc .mod-icon{background:linear-gradient(135deg,#a5f3fc,#06b6d4);}
+.mod-surf .mod-icon{background:linear-gradient(135deg,#bbf7d0,#10b981);}
+.mod-evening .mod-icon{background:linear-gradient(135deg,#ddd6fe,#8b5cf6);}
+.mod-weekly .mod-icon{background:linear-gradient(135deg,#fecdd3,#f43f5e);}
+.mod-info{flex:1;min-width:0;}
+.mod-title{font-size:14px;font-weight:800;color:var(--text);}
+.mod-desc{font-size:11px;color:var(--muted);margin-top:2px;font-weight:600;}
+.mod-chevron{font-size:17px;color:var(--muted);transition:transform .35s;flex-shrink:0;}
+.module-card.open .mod-chevron{transform:rotate(180deg);}
+.mod-badge{background:var(--mint);color:var(--teal);font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.module-body{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);}
+.module-card.open .module-body{max-height:5000px;}
+.mod-inner{padding:0 18px 20px;}
+.timer-card{background:var(--grad);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;color:#fff;}
+.t-display{font-size:52px;font-weight:900;letter-spacing:-2px;text-shadow:0 2px 8px rgba(0,0,0,.15);}
+.t-btns{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.t-btn{background:rgba(255,255,255,.22);color:#fff;border:none;padding:9px 16px;border-radius:50px;font-size:12px;font-weight:800;cursor:pointer;backdrop-filter:blur(6px);transition:background .2s,transform .15s;font-family:'Nunito',sans-serif;}
+.t-btn:hover{background:rgba(255,255,255,.35);transform:scale(1.04);}
+.abc-tag{display:inline-block;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:12px;margin-top:4px;}
+.tag-a{background:#e0f2fe;color:#0369a1;}
+.tag-b{background:#dcfce7;color:#15803d;}
+.tag-c{background:#fef9c3;color:#a16207;}
+.int-badge{display:inline-flex;align-items:center;gap:5px;background:var(--mint);color:var(--teal);font-size:12px;font-weight:800;padding:3px 11px;border-radius:20px;margin-bottom:7px;}
+
+/* ── PROGRESS PAGE ────────────────────────── */
+.period-sel{display:flex;gap:6px;margin-bottom:16px;}
+.period-btn{padding:7px 16px;border-radius:50px;border:1.5px solid var(--border);background:var(--card);font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
+.period-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.prog-card{background:var(--card);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow2);padding:18px 18px 14px;margin-bottom:12px;}
+.prog-card-title{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.prog-card-title span{font-size:16px;}
+.streak-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.streak-tile{background:var(--grad);border-radius:14px;padding:14px 10px;text-align:center;color:#fff;box-shadow:var(--shadow2);}
+.streak-num{font-size:28px;font-weight:900;line-height:1;}
+.streak-lbl{font-size:9px;font-weight:700;opacity:.85;margin-top:4px;line-height:1.3;}
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:4px;}
+.hm-col{display:flex;flex-direction:column;gap:4px;align-items:center;}
+.hm-day-lbl{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:2px;}
+.hm-cell{width:100%;aspect-ratio:1;border-radius:5px;transition:transform .2s;}
+.hm-cell:hover{transform:scale(1.2);}
+.hm-0{background:var(--mint);opacity:.6;}.hm-1{background:rgba(10,191,140,.3);}.hm-2{background:rgba(10,191,140,.55);}.hm-3{background:rgba(10,191,140,.75);}.hm-4{background:var(--teal);}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:110px;padding:0 2px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
+.bar-col{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--teal),var(--sky));min-height:3px;transition:height .7s cubic-bezier(.4,0,.2,1);position:relative;}
+.bar-val{font-size:9px;font-weight:800;color:var(--teal);position:absolute;top:-16px;left:50%;transform:translateX(-50%);}
+.bar-lbl{font-size:8px;font-weight:800;color:var(--muted);}
+.insight-card{background:var(--grad);border-radius:var(--radius);padding:18px 20px;color:#fff;margin-bottom:12px;position:relative;overflow:hidden;}
+.insight-card::after{content:'✨';position:absolute;right:16px;top:16px;font-size:28px;opacity:.3;}
+.insight-icon{font-size:26px;margin-bottom:8px;}
+.insight-title{font-size:14px;font-weight:800;margin-bottom:4px;}
+.insight-text{font-size:13px;opacity:.9;line-height:1.6;font-weight:600;}
+.donut-wrap{display:flex;align-items:center;gap:18px;}
+.donut-svg{width:100px;height:100px;flex-shrink:0;}
+.donut-legend{flex:1;}
+.legend-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.legend-label{font-size:12px;font-weight:700;color:var(--text);}
+.legend-val{font-size:12px;font-weight:900;color:var(--teal);margin-left:auto;}
+
+/* ── INSTALL ──────────────────────────────── */
+#installBtn{position:fixed;bottom:calc(var(--nav-h)+14px);right:14px;z-index:300;background:var(--grad);color:#fff;border:none;padding:11px 18px;border-radius:50px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 18px rgba(10,191,140,.45);align-items:center;gap:7px;display:none;transition:all .25s;}
+#installBtn.visible{display:flex;animation:popIn .4s ease both;}
+@keyframes popIn{from{opacity:0;transform:scale(.8) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+#toast{position:fixed;bottom:calc(var(--nav-h)+16px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:500;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sp-ring">🧠</div>
+  <div class="sp-title">Autoconciencia</div>
+  <div class="sp-sub">Control de Impulsos · 2026</div>
+  <div class="sp-year">2026</div>
+  <div class="sp-mark">Silvana García<br>2026</div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" class="hide">
+  <div class="ob-card">
+    <div class="ob-dots">
+      <div class="ob-dot active" id="dot0"></div>
+      <div class="ob-dot" id="dot1"></div>
+      <div class="ob-dot" id="dot2"></div>
+    </div>
+    <!-- Step 1: Name -->
+    <div class="ob-step active" id="ob-step0">
+      <div class="ob-icon">👋</div>
+      <div class="ob-title">¡Bienvenida!</div>
+      <div class="ob-sub">Este espacio es tuyo. Empecemos creando tu perfil personal.</div>
+      <input class="ob-input" id="ob-name" placeholder="¿Cuál es tu nombre?" maxlength="30">
+      <button class="ob-btn" onclick="obNext(1)">Continuar →</button>
+    </div>
+    <!-- Step 2: Avatar -->
+    <div class="ob-step" id="ob-step1">
+      <div class="ob-icon">🎨</div>
+      <div class="ob-title">Elegí tu avatar</div>
+      <div class="ob-sub">Seleccioná el que mejor te represente.</div>
+      <div class="ob-avatar-row" id="avatarRow"></div>
+      <button class="ob-btn" onclick="obNext(2)">Continuar →</button>
+    </div>
+    <!-- Step 3: Goals -->
+    <div class="ob-step" id="ob-step2">
+      <div class="ob-icon">🎯</div>
+      <div class="ob-title">¿Qué buscás trabajar?</div>
+      <div class="ob-sub">Podés elegir más de uno. Esto personaliza tus recomendaciones.</div>
+      <div class="ob-goal-row" id="goalRow"></div>
+      <button class="ob-btn" onclick="obFinish()">¡Empezar! 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION BANNER -->
+<div id="notifBanner">
+  <div class="nb-inner">
+    <div class="nb-icon" id="nbIcon">🔔</div>
+    <div class="nb-body">
+      <div class="nb-title" id="nbTitle">Recordatorio</div>
+      <div class="nb-msg" id="nbMsg">Es momento de tu práctica diaria</div>
+    </div>
+    <div class="nb-close" onclick="closeNotifBanner()">✕</div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profileModal" onclick="closeProfile(event)">
+  <div class="pm-sheet" id="pmSheet">
+    <div class="pm-drag"></div>
+    <div class="pm-header">
+      <div class="pm-avatar" id="pmAvatar">🧠</div>
+      <div>
+        <div class="pm-name" id="pmName">Usuario</div>
+        <div class="pm-level" id="pmLevel">⭐ Nivel 1 — Principiante</div>
+        <div class="pm-xp-bar"><div class="pm-xp-fill" id="pmXpFill" style="width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);font-weight:700;margin-top:4px" id="pmXpLabel">0 / 100 XP</div>
+      </div>
+    </div>
+
+    <!-- Goals -->
+    <div class="pm-section">
+      <div class="pm-sec-title">🎯 Mis objetivos</div>
+      <div id="pmGoals" style="display:flex;flex-wrap:wrap;gap:7px;"></div>
+    </div>
+
+    <!-- Badges -->
+    <div class="pm-section">
+      <div class="pm-sec-title">🏅 Logros</div>
+      <div class="pm-badges" id="pmBadges"></div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="pm-section">
+      <div class="pm-sec-title">🔔 Notificaciones</div>
+      <div class="pm-notif-row">
+        <div><div class="pm-notif-label">Ritual matutino</div><div class="pm-notif-sub">Recordatorio de mañana</div></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="time" class="pm-time-input" id="notifMorningTime" value="08:00">
+          <label class="toggle-wrap"><input type="checkbox" id="notifMorning" onchange="saveNotifSettings()"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+      <div class="pm-notif-row">
+        <div><div class="pm-notif-label">Reflexión vespertina</div><div class="pm-notif-sub">Recordatorio de noche</div></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="time" class="pm-time-input" id="notifEveningTime" value="21:00">
+          <label class="toggle-wrap"><input type="checkbox" id="notifEvening" onchange="saveNotifSettings()"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+      <div class="pm-notif-row">
+        <div><div class="pm-notif-label">Revisión semanal</div><div class="pm-notif-sub">Domingo por la noche</div></div>
+        <label class="toggle-wrap" style="margin-top:4px;"><input type="checkbox" id="notifWeekly" onchange="saveNotifSettings()"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <button class="pm-edit-btn" onclick="openEditProfile()">✏️ Editar perfil</button>
+    <button class="pm-danger-btn" onclick="confirmReset()">🗑 Borrar todos mis datos</button>
+  </div>
+</div>
+
+<!-- SVG DEFS -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0abf8c"/>
+      <stop offset="100%" stop-color="#05c3de"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div id="app">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-title" id="topTitle">Autoconciencia</div>
+      <div class="tb-sub" id="topDate"></div>
+    </div>
+    <div class="tb-right">
+      <button class="tb-notif-btn" onclick="toggleNotifPanel()">🔔<div class="tb-notif-dot" id="notifDot"></div></button>
+      <div class="tb-avatar" id="tbAvatar" onclick="openProfile()">🧠</div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="welcome-banner">
+        <div class="wb-date" id="bannerDate"></div>
+        <div class="wb-hi" id="bannerHi">¡Hola, qué gusto de conectarnos! 👋</div>
+        <div class="wb-msg">Tu práctica diaria de autoconciencia y control de impulsos.</div>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat-tile"><div class="stat-num" id="totalMorning">0</div><div class="stat-lbl">Mañana</div></div>
+        <div class="stat-tile"><div class="stat-num" id="totalABC">0</div><div class="stat-lbl">ABC</div></div>
+        <div class="stat-tile"><div class="stat-num" id="totalUrge">0</div><div class="stat-lbl">Surfeos</div></div>
+        <div class="stat-tile"><div class="stat-num" id="totalEvening">0</div><div class="stat-lbl">Noche</div></div>
+      </div>
+
+      <div class="progress-card">
+        <div class="ring-wrap">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <circle class="ring-bg" cx="35" cy="35" r="28"/>
+            <circle class="ring-fg" id="ringCircle" cx="35" cy="35" r="28" stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+          </svg>
+          <div class="ring-num" id="ringPct">0%</div>
+        </div>
+        <div style="flex:1">
+          <div class="pi-title">Progreso de hoy</div>
+          <div class="pi-sub">Actividades completadas</div>
+          <div id="progressBars"></div>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div id="recoSection"></div>
+
+      <div class="quick-grid">
+        <div class="qa-card" onclick="goTo('modules')"><div class="qa-emoji">📋</div><div class="qa-title">Ver módulos</div><div class="qa-sub">Todas las actividades</div></div>
+        <div class="qa-card" onclick="openModule('mod-morning')"><div class="qa-emoji">🌅</div><div class="qa-title">Ritual Matutino</div><div class="qa-sub">Empezar el día</div></div>
+        <div class="qa-card" onclick="openModule('mod-surf')"><div class="qa-emoji">🌊</div><div class="qa-title">Surfear Impulso</div><div class="qa-sub">Herramienta rápida</div></div>
+        <div class="qa-card" onclick="openModule('mod-evening')"><div class="qa-emoji">🌙</div><div class="qa-title">Reflexión</div><div class="qa-sub">Cierre del día</div></div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="page" id="page-modules">
+      <div class="sec-title">Módulos</div>
+      <div class="sec-sub">Tocá cada módulo para expandirlo</div>
+      <div class="module-grid">
+
+        <div class="module-card mod-morning" id="mod-morning">
+          <div class="module-header" onclick="toggleModule('mod-morning')">
+            <div class="mod-icon">🌅</div>
+            <div class="mod-info"><div class="mod-title">Ritual Matutino</div><div class="mod-desc">10 min · Antes de revisar el teléfono</div></div>
+            <div class="mod-badge" id="badge-morning">0</div><div class="mod-chevron">▾</div>
+          </div>
+          <div class="module-body"><div class="mod-inner">
+            <div class="info-box"><p>1. Sentate cómodamente y cerrá los ojos</p><p>2. Enfocate en tu respiración</p><p>3. Observá los pensamientos sin juzgar</p><p>4. Redirigí suavemente tu atención</p></div>
+            <div class="timer-card"><div class="t-display" id="morningTimer">10:00</div><div class="t-btns"><button class="t-btn" onclick="startTimer('morning',600)">▶ Iniciar</button><button class="t-btn" onclick="pauseTimer()">⏸ Pausar</button><button class="t-btn" onclick="resetTimer('morning',600)">↺ Reset</button></div></div>
+            <form onsubmit="saveMorning(event)">
+              <div class="form-group"><label class="form-label">Fecha</label><input type="date" id="morningDate"></div>
+              <div class="form-group"><label class="form-label">Tres palabras que te describen ahora</label><input type="text" id="morningWords" placeholder="Ej: tranquila, energizada, serena…" required></div>
+              <div class="form-group"><label class="form-label">Notas (opcional)</label><textarea id="morningNotes" placeholder="Observaciones de tu meditación…"></textarea></div>
+              <button type="submit" class="save-btn">💾 Guardar entrada</button>
+            </form>
+            <div class="entries-header">Registros</div><div id="morningEntries"></div>
+          </div></div>
+        </div>
+
+        <div class="module-card mod-abc" id="mod-abc">
+          <div class="module-header" onclick="toggleModule('mod-abc')">
+            <div class="mod-icon">📊</div>
+            <div class="mod-info"><div class="mod-title">Rastreador ABC</div><div class="mod-desc">15 min · Antecedente · Conducta · Consecuencia</div></div>
+            <div class="mod-badge" id="badge-abc">0</div><div class="mod-chevron">▾</div>
+          </div>
+          <div class="module-body"><div class="mod-inner">
+            <div class="info-box"><p><strong>A</strong> — Qué pasó antes del impulso</p><p><strong>B</strong> — Cómo respondiste</p><p><strong>C</strong> — Qué pasó después</p></div>
+            <form onsubmit="saveABC(event)">
+              <div class="form-group"><label class="form-label">Fecha y hora</label><input type="datetime-local" id="abcDateTime" required></div>
+              <div class="abc-tag tag-a">A · Antecedente</div>
+              <div class="form-group"><label class="form-label">Situación</label><textarea id="abcSituation" placeholder="¿Dónde estabas? ¿Con quién? ¿Qué hacías?" required></textarea></div>
+              <div class="form-group"><label class="form-label">Pensamientos</label><textarea id="abcThoughts" placeholder="¿Qué pasaba por tu mente?" required></textarea></div>
+              <div class="form-group"><label class="form-label">Emociones</label><input type="text" id="abcEmotions" placeholder="Ej: soledad, ansiedad, enojo…" required></div>
+              <div class="form-group"><label class="form-label">Sensaciones físicas</label><input type="text" id="abcPhysical" placeholder="Ej: tensión, ritmo cardíaco elevado…"></div>
+              <div class="abc-tag tag-b">B · Conducta</div>
+              <div class="form-group"><label class="form-label">¿Qué hiciste?</label><textarea id="abcBehavior" placeholder="Ej: Resistí, llamé a un amigo…" required></textarea></div>
+              <div class="abc-tag tag-c">C · Consecuencia</div>
+              <div class="form-group"><label class="form-label">¿Qué pasó después?</label><textarea id="abcConsequence" placeholder="¿Cómo te sentiste? ¿El impulso bajó?" required></textarea></div>
+              <button type="submit" class="save-btn">💾 Guardar registro ABC</button>
+            </form>
+            <div class="entries-header">Registros</div><div id="abcEntries"></div>
+          </div></div>
+        </div>
+
+        <div class="module-card mod-surf" id="mod-surf">
+          <div class="module-header" onclick="toggleModule('mod-surf')">
+            <div class="mod-icon">🌊</div>
+            <div class="mod-info"><div class="mod-title">Surfear el Impulso</div><div class="mod-desc">5–10 min · Herramienta de emergencia</div></div>
+            <div class="mod-badge" id="badge-surf">0</div><div class="mod-chevron">▾</div>
+          </div>
+          <div class="module-body"><div class="mod-inner">
+            <div class="info-box"><p>1. Reconocé el impulso sin juzgar</p><p>2. Observá dónde lo sentís en el cuerpo</p><p>3. Visualizalo como una ola que sube y baja</p><p>4. Respirá profundo y lento</p><p>5. Recordá: "Este sentimiento pasará"</p></div>
+            <div class="timer-card"><div class="t-display" id="surfTimer">10:00</div><div class="t-btns"><button class="t-btn" onclick="startTimer('surf',600)">▶ 10 min</button><button class="t-btn" onclick="startTimer('surf',300)">▶ 5 min</button><button class="t-btn" onclick="pauseTimer()">⏸ Pausar</button><button class="t-btn" onclick="resetTimer('surf',600)">↺ Reset</button></div></div>
+            <form onsubmit="saveSurf(event)">
+              <div class="form-group"><label class="form-label">Fecha y hora</label><input type="datetime-local" id="surfDateTime" required></div>
+              <div class="form-group"><label class="form-label">Intensidad del impulso (1–10)</label><input type="number" id="surfIntensity" min="1" max="10" required></div>
+              <div class="form-group"><label class="form-label">¿Cuánto duró?</label><input type="text" id="surfDuration" placeholder="Ej: 8 minutos…" required></div>
+              <div class="form-group"><label class="form-label">¿Qué te ayudó?</label><textarea id="surfCoping" placeholder="Respirar, caminar, música…" required></textarea></div>
+              <div class="form-group"><label class="form-label">¿Qué aprendiste?</label><textarea id="surfLearning" placeholder="Reflexiones…" required></textarea></div>
+              <button type="submit" class="save-btn">💾 Guardar práctica</button>
+            </form>
+            <div class="entries-header">Registros</div><div id="surfEntries"></div>
+          </div></div>
+        </div>
+
+        <div class="module-card mod-evening" id="mod-evening">
+          <div class="module-header" onclick="toggleModule('mod-evening')">
+            <div class="mod-icon">🌙</div>
+            <div class="mod-info"><div class="mod-title">Reflexión Vespertina</div><div class="mod-desc">10 min · Cierre del día</div></div>
+            <div class="mod-badge" id="badge-evening">0</div><div class="mod-chevron">▾</div>
+          </div>
+          <div class="module-body"><div class="mod-inner">
+            <div class="timer-card"><div class="t-display" id="eveningTimer">10:00</div><div class="t-btns"><button class="t-btn" onclick="startTimer('evening',600)">▶ Iniciar</button><button class="t-btn" onclick="pauseTimer()">⏸ Pausar</button><button class="t-btn" onclick="resetTimer('evening',600)">↺ Reset</button></div></div>
+            <form onsubmit="saveEvening(event)">
+              <div class="form-group"><label class="form-label">Fecha</label><input type="date" id="eveningDate"></div>
+              <div class="form-group"><label class="form-label">Momento más desafiante del día</label><textarea id="eveningChallenge" required></textarea></div>
+              <div class="form-group"><label class="form-label">¿Qué aprendiste hoy?</label><textarea id="eveningLearning" required></textarea></div>
+              <div class="form-group"><label class="form-label">¿Por qué estás agradecida?</label><textarea id="eveningGratitude" required></textarea></div>
+              <div class="form-group"><label class="form-label">¿Qué harás diferente mañana?</label><textarea id="eveningTomorrow" required></textarea></div>
+              <button type="submit" class="save-btn">💾 Guardar reflexión</button>
+            </form>
+            <div class="entries-header">Registros</div><div id="eveningEntries"></div>
+          </div></div>
+        </div>
+
+        <div class="module-card mod-weekly" id="mod-weekly">
+          <div class="module-header" onclick="toggleModule('mod-weekly')">
+            <div class="mod-icon">📈</div>
+            <div class="mod-info"><div class="mod-title">Revisión Semanal</div><div class="mod-desc">30 min · Domingo por la noche</div></div>
+            <div class="mod-badge" id="badge-weekly">0</div><div class="mod-chevron">▾</div>
+          </div>
+          <div class="module-body"><div class="mod-inner">
+            <div class="timer-card"><div class="t-display" id="weeklyTimer">30:00</div><div class="t-btns"><button class="t-btn" onclick="startTimer('weekly',1800)">▶ Iniciar</button><button class="t-btn" onclick="pauseTimer()">⏸ Pausar</button><button class="t-btn" onclick="resetTimer('weekly',1800)">↺ Reset</button></div></div>
+            <form onsubmit="saveWeekly(event)">
+              <div class="form-group"><label class="form-label">Semana del</label><input type="date" id="weeklyDate"></div>
+              <div class="form-group"><label class="form-label">Desencadenantes comunes</label><textarea id="weeklyTriggers" required></textarea></div>
+              <div class="form-group"><label class="form-label">Estrategias efectivas</label><textarea id="weeklyStrategies" required></textarea></div>
+              <div class="form-group"><label class="form-label">Necesidades subyacentes</label><textarea id="weeklyNeeds" required></textarea></div>
+              <div class="form-group"><label class="form-label">Mis 3 principales desencadenantes</label><textarea id="weeklyTop3" required></textarea></div>
+              <div class="form-group"><label class="form-label">3 cosas que haré diferente</label><textarea id="weeklyActions" required></textarea></div>
+              <div class="form-group"><label class="form-label">Resumen e insights</label><textarea id="weeklySummary" required></textarea></div>
+              <button type="submit" class="save-btn">💾 Guardar revisión semanal</button>
+            </form>
+            <div class="entries-header">Registros</div><div id="weeklyEntries"></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="page" id="page-progress">
+      <div class="sec-title">Progreso</div>
+      <div class="sec-sub">Tu evolución en el tiempo</div>
+      <div class="period-sel">
+        <button class="period-btn active" onclick="setPeriod(7,this)">7 días</button>
+        <button class="period-btn" onclick="setPeriod(14,this)">14 días</button>
+        <button class="period-btn" onclick="setPeriod(30,this)">30 días</button>
+      </div>
+      <div id="insightCard"></div>
+      <div class="prog-card"><div class="prog-card-title"><span>🔥</span> Rachas y totales</div><div class="streak-row" id="streakRow"></div></div>
+      <div class="prog-card"><div class="prog-card-title"><span>📅</span> Actividad 28 días</div><div class="heatmap" id="heatmapGrid"></div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:10px;justify-content:flex-end;">
+          <span style="font-size:9px;color:var(--muted);font-weight:700;">Menos</span>
+          <div style="width:12px;height:12px;border-radius:3px;" class="hm-0"></div><div style="width:12px;height:12px;border-radius:3px;" class="hm-1"></div><div style="width:12px;height:12px;border-radius:3px;" class="hm-2"></div><div style="width:12px;height:12px;border-radius:3px;" class="hm-3"></div><div style="width:12px;height:12px;border-radius:3px;" class="hm-4"></div>
+          <span style="font-size:9px;color:var(--muted);font-weight:700;">Más</span>
+        </div>
+      </div>
+      <div class="prog-card"><div class="prog-card-title"><span>📊</span> Actividades por día</div><div class="bar-chart" id="barChart"></div><div style="display:flex;justify-content:space-between;padding:0 2px;margin-top:5px;" id="barLabels"></div></div>
+      <div class="prog-card">
+        <div class="prog-card-title"><span>📉</span> Tendencia de intensidad</div>
+        <div style="position:relative;width:100%;height:130px;margin-top:6px;"><svg id="lineChart" viewBox="0 0 300 120" preserveAspectRatio="none" style="width:100%;height:100%;overflow:visible;"></svg></div>
+        <div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:6px;text-align:center;">Tendencia descendente = mejor control 💪</div>
+      </div>
+      <div class="prog-card"><div class="prog-card-title"><span>🍩</span> Distribución por actividad</div><div class="donut-wrap"><svg class="donut-svg" id="donutChart" viewBox="0 0 110 110"></svg><div class="donut-legend" id="donutLegend"></div></div></div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="page" id="page-history">
+      <div class="sec-title">Historial</div>
+      <div class="sec-sub">Todos tus registros recientes</div>
+      <div id="historyContent"></div>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="goTo('home')" id="nav-home"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+    <button class="nav-item" onclick="goTo('modules')" id="nav-modules"><span class="nav-icon">📋</span><span class="nav-label">Módulos</span></button>
+    <button class="nav-item" onclick="goTo('progress')" id="nav-progress"><span class="nav-icon">📈</span><span class="nav-label">Progreso</span></button>
+    <button class="nav-item" onclick="goTo('history')" id="nav-history"><span class="nav-icon">🗂</span><span class="nav-label">Historial</span></button>
+  </nav>
+</div>
+
+<!-- PWA INSTALL MODAL -->
+<div id="installModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center;">
+  <div id="installSheet" style="background:#fff;border-radius:28px 28px 0 0;padding:32px 24px 40px;width:100%;max-width:480px;animation:slideSheet .4s cubic-bezier(.4,0,.2,1) both;">
+    <div style="width:44px;height:5px;background:#e0e0e0;border-radius:3px;margin:0 auto 24px;"></div>
+    <div style="text-align:center;margin-bottom:22px;">
+      <div id="installAppIcon" style="width:80px;height:80px;border-radius:22px;background:linear-gradient(135deg,#0abf8c,#0891b2);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 8px 24px rgba(10,191,140,.4);">🧠</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#0f3d36;margin-bottom:6px;">Instalar Autoconciencia</div>
+      <div style="font-size:13px;color:#5e9e8e;font-weight:600;line-height:1.6;">Agregá la app a tu pantalla de inicio para acceder sin navegador, recibir notificaciones y usarla sin internet.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;">
+      <div style="text-align:center;background:#e8fdf8;border-radius:14px;padding:14px 8px;">
+        <div style="font-size:24px;margin-bottom:5px;">📴</div>
+        <div style="font-size:11px;font-weight:800;color:#0f3d36;">Sin internet</div>
+      </div>
+      <div style="text-align:center;background:#e8fdf8;border-radius:14px;padding:14px 8px;">
+        <div style="font-size:24px;margin-bottom:5px;">🔔</div>
+        <div style="font-size:11px;font-weight:800;color:#0f3d36;">Notificaciones</div>
+      </div>
+      <div style="text-align:center;background:#e8fdf8;border-radius:14px;padding:14px 8px;">
+        <div style="font-size:24px;margin-bottom:5px;">⚡</div>
+        <div style="font-size:11px;font-weight:800;color:#0f3d36;">Súper rápida</div>
+      </div>
+    </div>
+    <div id="installPlatformSteps" style="background:#f4fdfb;border-radius:14px;padding:16px;margin-bottom:18px;font-size:13px;color:#0f3d36;line-height:1.8;font-weight:600;"></div>
+    <button id="installNativeBtn" style="width:100%;padding:16px;background:linear-gradient(135deg,#0abf8c,#05c3de,#0891b2);color:#fff;border:none;border-radius:16px;font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(10,191,140,.4);margin-bottom:10px;display:none;">📲 Instalar ahora</button>
+    <button onclick="closeInstallModal()" style="width:100%;padding:12px;background:transparent;border:2px solid #c8f0e8;border-radius:14px;font-size:14px;font-weight:800;color:#5e9e8e;font-family:'Nunito',sans-serif;cursor:pointer;">Ahora no</button>
+  </div>
+</div>
+
+<!-- UPDATE BANNER -->
+<div id="updateBanner" style="display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:8500;padding:0 14px;padding-top:env(safe-area-inset-top);">
+  <div style="background:#0f3d36;color:#fff;border-radius:0 0 16px 16px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.3);">
+    <span style="font-size:18px;">🔄</span>
+    <div style="flex:1;font-size:13px;font-weight:700;">Nueva versión disponible</div>
+    <button onclick="applyUpdate()" style="background:#0abf8c;border:none;color:#fff;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;">Actualizar</button>
+  </div>
+</div>
+
+<!-- OFFLINE INDICATOR -->
+<div id="offlineBar" style="display:none;position:fixed;bottom:var(--nav-h);left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:400;">
+  <div style="background:#f59e0b;color:#fff;padding:8px 16px;text-align:center;font-size:12px;font-weight:800;letter-spacing:.3px;">
+    📴 Sin conexión — usando datos guardados
+  </div>
+</div>
+
+<!-- FLOATING INSTALL BUTTON (fallback) -->
+<button id="installBtn" style="display:none;position:fixed;bottom:calc(var(--nav-h) + 14px);right:14px;z-index:300;background:linear-gradient(135deg,#0abf8c,#0891b2);color:#fff;border:none;padding:12px 18px;border-radius:50px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 18px rgba(10,191,140,.45);align-items:center;gap:7px;">📲 Instalar App</button>
+
+<div id="toast"></div>
+
+<script>
+// ── CORE STORAGE ──────────────────────────────────────────────
+const get=k=>JSON.parse(localStorage.getItem(k)||'[]');
+const getObj=k=>JSON.parse(localStorage.getItem(k)||'null');
+const setS=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const today=new Date(), todayStr=today.toISOString().split('T')[0];
+const dl=today.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+document.getElementById('topDate').textContent=dl;
+document.getElementById('bannerDate').textContent=dl;
+
+// ── SPLASH ────────────────────────────────────────────────────
+setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+
+// ── ONBOARDING ────────────────────────────────────────────────
+const AVATARS=['🌸','🦋','🌿','🌊','⭐','🔮','🌻','🦁','🐬','🌈'];
+const GOALS=[
+  {id:'mindfulness',icon:'🧘',label:'Aumentar autoconciencia'},
+  {id:'impulse',icon:'🌊',label:'Control de impulsos'},
+  {id:'emotions',icon:'💙',label:'Gestión emocional'},
+  {id:'habits',icon:'📅',label:'Construir hábitos positivos'},
+  {id:'resilience',icon:'💪',label:'Fortalecer resiliencia'},
+];
+let obAvatar=AVATARS[0], obGoals=[], obStep=0;
+
+function initOnboarding(){
+  const profile=getObj('userProfile');
+  if(!profile){
+    setTimeout(()=>{
+      document.getElementById('onboarding').classList.remove('hide');
+      renderAvatarRow(); renderGoalRow();
+    },3200);
+  } else {
+    applyProfile(profile);
+  }
+}
+
+function renderAvatarRow(){
+  document.getElementById('avatarRow').innerHTML=AVATARS.map((a,i)=>
+    `<div class="ob-av${i===0?' sel':''}" onclick="selAvatar('${a}',this)">${a}</div>`).join('');
+}
+function renderGoalRow(){
+  document.getElementById('goalRow').innerHTML=GOALS.map(g=>
+    `<div class="ob-goal" onclick="toggleGoal('${g.id}',this)"><span>${g.icon}</span><span>${g.label}</span></div>`).join('');
+}
+function selAvatar(a,el){
+  obAvatar=a;
+  document.querySelectorAll('.ob-av').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function toggleGoal(id,el){
+  el.classList.toggle('sel');
+  const idx=obGoals.indexOf(id);
+  if(idx>-1)obGoals.splice(idx,1);else obGoals.push(id);
+}
+function obNext(step){
+  if(step===1){
+    const name=document.getElementById('ob-name').value.trim();
+    if(!name){document.getElementById('ob-name').style.borderColor='var(--danger)';return;}
+    document.getElementById('ob-name').style.borderColor='';
+  }
+  document.getElementById('ob-step'+obStep).classList.remove('active');
+  document.getElementById('dot'+obStep).classList.remove('active');
+  obStep=step;
+  document.getElementById('ob-step'+step).classList.add('active');
+  document.getElementById('dot'+step).classList.add('active');
+}
+function obFinish(){
+  const name=document.getElementById('ob-name').value.trim()||'Usuario';
+  if(obGoals.length===0)obGoals=['mindfulness'];
+  const profile={name,avatar:obAvatar,goals:obGoals,xp:0,level:1,joinDate:todayStr};
+  setS('userProfile',profile);
+  document.getElementById('onboarding').classList.add('hide');
+  applyProfile(profile);
+  showToast(`¡Bienvenida, ${name}! 🎉`);
+  scheduleNotifications();
+}
+
+function applyProfile(p){
+  document.getElementById('tbAvatar').textContent=p.avatar||'🧠';
+  document.getElementById('topTitle').textContent='Hola, '+(p.name||'').split(' ')[0]+'!';
+  if(p.name) document.getElementById('bannerHi').textContent=`¡Hola, qué gusto de conectarnos! 👋`;
+  renderProfile();
+}
+
+// ── PROFILE MODAL ─────────────────────────────────────────────
+const BADGES=[
+  {id:'first_entry',icon:'🌱',label:'Primera entrada',desc:'Completaste tu primer registro'},
+  {id:'week_streak',icon:'🔥',label:'Racha de 7 días',desc:'7 días consecutivos activos'},
+  {id:'surf_master',icon:'🌊',label:'Surfista',desc:'10 registros de surfeo'},
+  {id:'morning_star',icon:'🌅',label:'Madrugadora',desc:'15 rituales matutinos'},
+  {id:'insight',icon:'💡',label:'Introspectiva',desc:'20 reflexiones vespertinas'},
+  {id:'abc_pro',icon:'📊',label:'Analítica',desc:'10 registros ABC'},
+  {id:'month_journey',icon:'🏆',label:'Un mes de viaje',desc:'30 días registrados'},
+];
+
+function calcXP(){
+  return get('morning').length*10 + get('abc').length*15 + get('surf').length*12 + get('evening').length*10 + get('weekly').length*25;
+}
+function calcLevel(xp){ return Math.floor(xp/100)+1; }
+const LEVEL_NAMES=['','Principiante','En camino','Consciente','Avanzada','Experta','Maestra'];
+
+function earnedBadges(){
+  const m=get('morning').length,a=get('abc').length,s=get('surf').length,ev=get('evening').length;
+  const allDates=new Set([...get('morning').map(e=>e.date),...get('evening').map(e=>e.date),...get('abc').map(e=>e.dt&&e.dt.slice(0,10)),...get('surf').map(e=>e.dt&&e.dt.slice(0,10))].filter(Boolean));
+  let streak=0;for(let i=0;i<=365;i++){if(allDates.has(daysAgo(i)))streak++;else break;}
+  const earned=new Set();
+  if(m+a+s+ev>0)earned.add('first_entry');
+  if(streak>=7)earned.add('week_streak');
+  if(s>=10)earned.add('surf_master');
+  if(m>=15)earned.add('morning_star');
+  if(ev>=20)earned.add('insight');
+  if(a>=10)earned.add('abc_pro');
+  if(allDates.size>=30)earned.add('month_journey');
+  return earned;
+}
+
+function renderProfile(){
+  const p=getObj('userProfile');if(!p)return;
+  const xp=calcXP();const lvl=Math.min(calcLevel(xp),6);
+  const xpInLevel=(xp%100),nextXP=100;
+  document.getElementById('pmAvatar').textContent=p.avatar||'🧠';
+  document.getElementById('pmName').textContent=p.name||'Usuario';
+  document.getElementById('pmLevel').textContent=`⭐ Nivel ${lvl} — ${LEVEL_NAMES[lvl]||'Maestra'}`;
+  document.getElementById('pmXpFill').style.width=(xpInLevel/nextXP*100)+'%';
+  document.getElementById('pmXpLabel').textContent=`${xpInLevel} / ${nextXP} XP para el siguiente nivel`;
+  // Goals
+  document.getElementById('pmGoals').innerHTML=(p.goals||[]).map(gid=>{
+    const g=GOALS.find(x=>x.id===gid);return g?`<div style="background:var(--mint2);border:1.5px solid var(--border);border-radius:50px;padding:6px 13px;font-size:12px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px;"><span>${g.icon}</span>${g.label}</div>`:'';
+  }).join('');
+  // Badges
+  const earned=earnedBadges();
+  document.getElementById('pmBadges').innerHTML=BADGES.map(b=>
+    `<div class="badge-pill${earned.has(b.id)?'':' locked'}" title="${b.desc}"><span>${b.icon}</span>${b.label}</div>`).join('');
+  // Notif settings
+  const ns=getObj('notifSettings')||{};
+  document.getElementById('notifMorning').checked=ns.morning||false;
+  document.getElementById('notifEvening').checked=ns.evening||false;
+  document.getElementById('notifWeekly').checked=ns.weekly||false;
+  document.getElementById('notifMorningTime').value=ns.morningTime||'08:00';
+  document.getElementById('notifEveningTime').value=ns.eveningTime||'21:00';
+}
+
+function openProfile(){document.getElementById('profileModal').classList.add('open');renderProfile();}
+function closeProfile(e){if(e.target===document.getElementById('profileModal'))document.getElementById('profileModal').classList.remove('open');}
+
+function openEditProfile(){
+  document.getElementById('profileModal').classList.remove('open');
+  const p=getObj('userProfile');if(!p)return;
+  const name=prompt('¿Cuál es tu nombre?',p.name)||p.name;
+  const avatar=prompt('Elegí tu avatar:\n'+AVATARS.join('  '),p.avatar)||p.avatar;
+  const updated={...p,name,avatar};
+  setS('userProfile',updated);
+  applyProfile(updated);
+  showToast('✅ Perfil actualizado');
+}
+function confirmReset(){
+  if(confirm('⚠️ ¿Segura que querés borrar TODOS tus datos? Esta acción no se puede deshacer.')){
+    ['morning','abc','surf','evening','weekly','userProfile','notifSettings'].forEach(k=>localStorage.removeItem(k));
+    location.reload();
+  }
+}
+
+// ── NOTIFICATIONS ─────────────────────────────────────────────
+function saveNotifSettings(){
+  const s={
+    morning:document.getElementById('notifMorning').checked,
+    evening:document.getElementById('notifEvening').checked,
+    weekly:document.getElementById('notifWeekly').checked,
+    morningTime:document.getElementById('notifMorningTime').value,
+    eveningTime:document.getElementById('notifEveningTime').value,
+  };
+  setS('notifSettings',s);
+  scheduleNotifications();
+  showToast('🔔 Preferencias guardadas');
+}
+
+function scheduleNotifications(){
+  if(!('Notification' in window))return;
+  if(Notification.permission==='default'){
+    Notification.requestPermission().then(p=>{if(p==='granted')scheduleNotifications();});
+    return;
+  }
+  if(Notification.permission!=='granted')return;
+
+  const ns=getObj('notifSettings')||{};
+  const now=new Date();
+  const h=now.getHours(),m=now.getMinutes();
+
+  // Morning check
+  if(ns.morning&&ns.morningTime){
+    const [mh,mm]=ns.morningTime.split(':').map(Number);
+    if(h===mh&&m===mm){
+      const mCount=get('morning').filter(e=>e.date===todayStr).length;
+      if(mCount===0) pushNotif('🌅 Ritual Matutino','Es el momento perfecto para empezar el día con conciencia plena.');
+    }
+  }
+  // Evening check
+  if(ns.evening&&ns.eveningTime){
+    const [eh,em]=ns.eveningTime.split(':').map(Number);
+    if(h===eh&&m===em){
+      const eCount=get('evening').filter(e=>e.date===todayStr).length;
+      if(eCount===0) pushNotif('🌙 Reflexión Vespertina','Tomá 10 minutos para cerrar el día con gratitud y aprendizaje.');
+    }
+  }
+  // Weekly check (Sunday evening)
+  if(ns.weekly&&now.getDay()===0&&h>=20){
+    const wCount=get('weekly').filter(e=>e.date>=daysAgo(7)).length;
+    if(wCount===0) pushNotif('📈 Revisión Semanal','Es domingo — momento ideal para revisar tu progreso de la semana.');
+  }
+}
+
+function pushNotif(title,body){
+  if(Notification.permission!=='granted')return;
+  new Notification(title,{body,icon:'icon-192.png'});
+}
+
+let notifPanelMsgs=[];
+function toggleNotifPanel(){
+  // Build in-app notification list
+  const msgs=buildNotifMessages();
+  if(msgs.length===0){showToast('✅ Sin notificaciones pendientes');return;}
+  // Show first one as banner
+  showNotifBanner(msgs[0].icon,msgs[0].title,msgs[0].msg);
+  document.getElementById('notifDot').classList.remove('show');
+}
+function buildNotifMessages(){
+  const msgs=[];
+  const m=get('morning').filter(e=>e.date===todayStr).length;
+  const ev=get('evening').filter(e=>e.date===todayStr).length;
+  const surf=get('surf');
+  const allDates=new Set([...get('morning').map(e=>e.date),...get('evening').map(e=>e.date),...get('abc').map(e=>e.dt&&e.dt.slice(0,10)),...get('surf').map(e=>e.dt&&e.dt.slice(0,10))].filter(Boolean));
+  let streak=0;for(let i=0;i<=365;i++){if(allDates.has(daysAgo(i)))streak++;else break;}
+  if(m===0) msgs.push({icon:'🌅',title:'Ritual pendiente',msg:'Aún no completaste tu ritual matutino de hoy.'});
+  if(ev===0) msgs.push({icon:'🌙',title:'Reflexión pendiente',msg:'Cerrá el día con tu reflexión vespertina.'});
+  if(streak>=3) msgs.push({icon:'🔥',title:`¡${streak} días seguidos!`,msg:'Mantenés una racha increíble. ¡No te detengas!'});
+  const recent=surf.filter(e=>e.dt&&e.dt.slice(0,10)>=daysAgo(7));
+  if(recent.length>0){
+    const avg=recent.reduce((s,e)=>s+Number(e.intensity||5),0)/recent.length;
+    if(avg>=7) msgs.push({icon:'💪',title:'Impulsos intensos esta semana',msg:`Intensidad promedio ${avg.toFixed(1)}/10. Recordá usar las técnicas de surfeo.`});
+  }
+  return msgs;
+}
+function showNotifBanner(icon,title,msg){
+  document.getElementById('nbIcon').textContent=icon;
+  document.getElementById('nbTitle').textContent=title;
+  document.getElementById('nbMsg').textContent=msg;
+  document.getElementById('notifBanner').classList.add('show');
+  setTimeout(()=>document.getElementById('notifBanner').classList.remove('show'),5000);
+}
+function closeNotifBanner(){document.getElementById('notifBanner').classList.remove('show');}
+
+function checkPendingNotifs(){
+  const msgs=buildNotifMessages();
+  if(msgs.length>0) document.getElementById('notifDot').classList.add('show');
+}
+
+// ── RECOMMENDATIONS ENGINE ────────────────────────────────────
+function renderRecommendations(){
+  const profile=getObj('userProfile');
+  const goals=profile?.goals||[];
+  const surf=get('surf');
+  const m=get('morning').length,a=get('abc').length,s=surf.length,ev=get('evening').length;
+  const allDates=new Set([...get('morning').map(e=>e.date),...get('evening').map(e=>e.date),...get('abc').map(e=>e.dt&&e.dt.slice(0,10)),...get('surf').map(e=>e.dt&&e.dt.slice(0,10))].filter(Boolean));
+  let streak=0;for(let i=0;i<=365;i++){if(allDates.has(daysAgo(i)))streak++;else break;}
+  const recentSurf=surf.filter(e=>e.dt&&e.dt.slice(0,10)>=daysAgo(7));
+  const avgIntensity=recentSurf.length?recentSurf.reduce((s,e)=>s+Number(e.intensity||5),0)/recentSurf.length:null;
+  const todayM=get('morning').filter(e=>e.date===todayStr).length>0;
+  const todayE=get('evening').filter(e=>e.date===todayStr).length>0;
+  const total=m+a+s+ev;
+
+  const recos=[];
+
+  // Priority 1: Urgent - high intensity
+  if(avgIntensity!==null&&avgIntensity>=7){
+    recos.push({type:'urgent',icon:'🚨',title:'Intensidad elevada detectada',text:`Tu promedio esta semana es ${avgIntensity.toFixed(1)}/10. Es un buen momento para practicar la técnica de surfeo antes de que el impulso crezca.`,action:'Ir a Surfear',fn:`openModule('mod-surf')`});
+  }
+
+  // Priority 2: Celebrate streak
+  if(streak>=5){
+    recos.push({type:'celebrate',icon:'🎉',title:`¡${streak} días de racha!`,text:`Estás construyendo un hábito poderoso. La constancia es la clave del cambio duradero.`,action:'Ver mi progreso',fn:`goTo('progress')`});
+  }
+
+  // Priority 3: Missing today's morning
+  if(!todayM&&total>0){
+    const h=new Date().getHours();
+    if(h<14) recos.push({type:'tip',icon:'🌅',title:'Ritual matutino pendiente',text:'Empezar el día con conciencia plena cambia toda la jornada. Solo 10 minutos pueden hacer la diferencia.',action:'Iniciar ritual',fn:`openModule('mod-morning')`});
+  }
+
+  // Priority 4: Goal-based
+  if(goals.includes('mindfulness')&&m<5){
+    recos.push({type:'neutral',icon:'🧘',title:'Construí tu base',text:'La práctica matutina es el pilar de la autoconciencia. Los primeros 21 días son los más importantes para crear el hábito.',action:'Empezar ahora',fn:`openModule('mod-morning')`});
+  }
+  if(goals.includes('impulse')&&s<3){
+    recos.push({type:'tip',icon:'🌊',title:'Entrenamiento de surfeo',text:'Practicar surfear el impulso incluso cuando no hay crisis fortalece tu músculo de regulación. Probalo hoy.',action:'Practicar',fn:`openModule('mod-surf')`});
+  }
+  if(goals.includes('habits')&&a<3){
+    recos.push({type:'neutral',icon:'📊',title:'El ABC te da superpoderes',text:'Registrar el patrón Antecedente-Conducta-Consecuencia te da claridad para interrumpir ciclos automáticos.',action:'Registrar ABC',fn:`openModule('mod-abc')`});
+  }
+
+  // Priority 5: Missing evening reflection
+  if(!todayE&&total>3&&new Date().getHours()>=18){
+    recos.push({type:'tip',icon:'🌙',title:'Cerrá el día con intención',text:'La reflexión vespertina consolida el aprendizaje del día. ¿Qué te llevás de hoy?',action:'Reflexionar',fn:`openModule('mod-evening')`});
+  }
+
+  // Show max 2 recommendations
+  const shown=recos.slice(0,2);
+  const typeClass={urgent:'reco-urgent',tip:'reco-tip',celebrate:'reco-celebrate',neutral:'reco-neutral'};
+  document.getElementById('recoSection').innerHTML=shown.length?
+    `<div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">✨ Para vos hoy</div>`+
+    shown.map(r=>`<div class="reco-card ${typeClass[r.type]||'reco-neutral'}">
+      <div class="reco-icon">${r.icon}</div>
+      <div class="reco-title">${r.title}</div>
+      <div class="reco-text">${r.text}</div>
+      ${r.action?`<button class="reco-action" onclick="${r.fn}">${r.action} →</button>`:''}
+    </div>`).join(''):'';
+}
+
+// ── NAV ───────────────────────────────────────────────────────
+const ALL_PAGES=['home','modules','progress','history'];
+function goTo(p){
+  ALL_PAGES.forEach(x=>{document.getElementById('page-'+x).classList.remove('active');document.getElementById('nav-'+x).classList.remove('active');});
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('nav-'+p).classList.add('active');
+  if(p==='history')renderHistory();
+  if(p==='progress')renderProgress();
+  window.scrollTo(0,0);
+}
+
+// ── ACCORDION ─────────────────────────────────────────────────
+function toggleModule(id){const c=document.getElementById(id),open=c.classList.contains('open');document.querySelectorAll('.module-card').forEach(x=>x.classList.remove('open'));if(!open)c.classList.add('open');}
+function openModule(id){goTo('modules');setTimeout(()=>{document.querySelectorAll('.module-card').forEach(x=>x.classList.remove('open'));const c=document.getElementById(id);if(c){c.classList.add('open');c.scrollIntoView({behavior:'smooth',block:'start'});}},160);}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ── TIMER ─────────────────────────────────────────────────────
+let tInterval,tLeft=0;
+const tIDs={morning:'morningTimer',surf:'surfTimer',evening:'eveningTimer',weekly:'weeklyTimer'};
+function startTimer(k,s){if(tInterval)clearInterval(tInterval);tLeft=s;tInterval=setInterval(()=>{tLeft--;updT(k,tLeft);if(tLeft<=0){clearInterval(tInterval);showToast('⏰ ¡Tiempo completado!');try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator();o.frequency.value=880;o.connect(c.destination);o.start();o.stop(c.currentTime+.4);}catch(e){}}},1000);}
+function pauseTimer(){if(tInterval){clearInterval(tInterval);tInterval=null;}}
+function resetTimer(k,s){pauseTimer();updT(k,s);}
+function updT(k,s){const el=document.getElementById(tIDs[k]);if(el)el.textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
+
+// ── ADD ENTRY ─────────────────────────────────────────────────
+function addE(k,e){
+  const a=get(k);a.unshift(e);setS(k,a);
+  // XP
+  const p=getObj('userProfile');
+  if(p){const xpMap={morning:10,abc:15,surf:12,evening:10,weekly:25};p.xp=(p.xp||0)+(xpMap[k]||10);setS('userProfile',p);}
+  updateStats();checkPendingNotifs();
+}
+function delE(k,i){const a=get(k);a.splice(i,1);setS(k,a);updateStats();loadAll();}
+
+// ── SAVE FORMS ────────────────────────────────────────────────
+function saveMorning(e){e.preventDefault();addE('morning',{date:document.getElementById('morningDate').value,words:document.getElementById('morningWords').value,notes:document.getElementById('morningNotes').value,ts:Date.now()});e.target.reset();document.getElementById('morningDate').value=todayStr;loadMorning();showToast('✅ Ritual matutino guardado ✨');renderRecommendations();}
+function saveABC(e){e.preventDefault();addE('abc',{dt:document.getElementById('abcDateTime').value,situation:document.getElementById('abcSituation').value,thoughts:document.getElementById('abcThoughts').value,emotions:document.getElementById('abcEmotions').value,physical:document.getElementById('abcPhysical').value,behavior:document.getElementById('abcBehavior').value,consequence:document.getElementById('abcConsequence').value,ts:Date.now()});e.target.reset();loadABC();showToast('✅ Registro ABC guardado');renderRecommendations();}
+function saveSurf(e){e.preventDefault();addE('surf',{dt:document.getElementById('surfDateTime').value,intensity:document.getElementById('surfIntensity').value,duration:document.getElementById('surfDuration').value,coping:document.getElementById('surfCoping').value,learning:document.getElementById('surfLearning').value,ts:Date.now()});e.target.reset();loadSurf();showToast('✅ Práctica de surfeo guardada 🌊');renderRecommendations();}
+function saveEvening(e){e.preventDefault();addE('evening',{date:document.getElementById('eveningDate').value,challenge:document.getElementById('eveningChallenge').value,learning:document.getElementById('eveningLearning').value,gratitude:document.getElementById('eveningGratitude').value,tomorrow:document.getElementById('eveningTomorrow').value,ts:Date.now()});e.target.reset();document.getElementById('eveningDate').value=todayStr;loadEvening();showToast('✅ Reflexión guardada 🌙');renderRecommendations();}
+function saveWeekly(e){e.preventDefault();addE('weekly',{date:document.getElementById('weeklyDate').value,triggers:document.getElementById('weeklyTriggers').value,strategies:document.getElementById('weeklyStrategies').value,needs:document.getElementById('weeklyNeeds').value,top3:document.getElementById('weeklyTop3').value,actions:document.getElementById('weeklyActions').value,summary:document.getElementById('weeklySummary').value,ts:Date.now()});e.target.reset();document.getElementById('weeklyDate').value=todayStr;loadWeekly();showToast('✅ Revisión semanal guardada 📈');renderRecommendations();}
+
+// ── RENDER ENTRIES ────────────────────────────────────────────
+function ec(fields,k,i){return`<div class="entry-card"><button class="entry-del" onclick="delE('${k}',${i})">🗑</button>${fields.map(f=>`<div class="entry-row">${f}</div>`).join('')}</div>`;}
+function es(){return`<div class="empty-state"><div class="es-icon">📭</div>Sin registros aún</div>`;}
+function loadMorning(){const a=get('morning'),c=document.getElementById('morningEntries');c.innerHTML=a.length?a.map((e,i)=>ec([`<span class="entry-date">📅 ${e.date}</span>`,`<strong>Sentimientos:</strong> ${e.words}`,e.notes?`<strong>Notas:</strong> ${e.notes}`:''].filter(Boolean),'morning',i)).join(''):es();}
+function loadABC(){const a=get('abc'),c=document.getElementById('abcEntries');c.innerHTML=a.length?a.map((e,i)=>ec([`<span class="entry-date">📅 ${new Date(e.dt).toLocaleString('es-ES')}</span>`,`<span class="abc-tag tag-a" style="margin:0 0 5px">A</span> ${e.situation}`,`<span class="abc-tag tag-b" style="margin:0 0 5px">B</span> ${e.behavior}`,`<span class="abc-tag tag-c" style="margin:0 0 5px">C</span> ${e.consequence}`],'abc',i)).join(''):es();}
+function loadSurf(){const a=get('surf'),c=document.getElementById('surfEntries');c.innerHTML=a.length?a.map((e,i)=>ec([`<span class="entry-date">📅 ${new Date(e.dt).toLocaleString('es-ES')}</span>`,`<span class="int-badge">💥 Intensidad ${e.intensity}/10</span>`,`<strong>Duración:</strong> ${e.duration}`,`<strong>Estrategia:</strong> ${e.coping}`],'surf',i)).join(''):es();}
+function loadEvening(){const a=get('evening'),c=document.getElementById('eveningEntries');c.innerHTML=a.length?a.map((e,i)=>ec([`<span class="entry-date">📅 ${e.date}</span>`,`<strong>Desafío:</strong> ${e.challenge}`,`<strong>Aprendizaje:</strong> ${e.learning}`,`<strong>Gratitud:</strong> ${e.gratitude}`],'evening',i)).join(''):es();}
+function loadWeekly(){const a=get('weekly'),c=document.getElementById('weeklyEntries');c.innerHTML=a.length?a.map((e,i)=>ec([`<span class="entry-date">📅 Semana del ${e.date}</span>`,`<strong>Top 3:</strong> ${e.top3}`,`<strong>Estrategias:</strong> ${e.strategies}`],'weekly',i)).join(''):es();}
+function loadAll(){loadMorning();loadABC();loadSurf();loadEvening();loadWeekly();}
+
+// ── HISTORY ───────────────────────────────────────────────────
+function renderHistory(){
+  const all=[...get('morning').map(e=>({...e,type:'🌅 Ritual Matutino',label:e.words,date:e.date})),...get('abc').map(e=>({...e,type:'📊 ABC',label:e.emotions,date:new Date(e.dt).toLocaleDateString('es-ES')})),...get('surf').map(e=>({...e,type:'🌊 Surfeo',label:`Intensidad ${e.intensity}/10`,date:new Date(e.dt).toLocaleDateString('es-ES')})),...get('evening').map(e=>({...e,type:'🌙 Reflexión',label:(e.gratitude||'').substring(0,55)+'…',date:e.date})),...get('weekly').map(e=>({...e,type:'📈 Semanal',label:(e.top3||'').substring(0,55)+'…',date:e.date}))].sort((a,b)=>(b.ts||0)-(a.ts||0));
+  document.getElementById('historyContent').innerHTML=all.length?all.map(e=>`<div class="entry-card" style="margin-bottom:11px;"><div class="entry-date">${e.type} · ${e.date}</div><div class="entry-row">${e.label||''}</div></div>`).join(''):`<div class="empty-state"><div class="es-icon">📭</div>No hay registros todavía.</div>`;
+}
+
+// ── STATS ─────────────────────────────────────────────────────
+function updateStats(){
+  const m=get('morning').length,a=get('abc').length,s=get('surf').length,ev=get('evening').length;
+  document.getElementById('totalMorning').textContent=m;document.getElementById('totalABC').textContent=a;document.getElementById('totalUrge').textContent=s;document.getElementById('totalEvening').textContent=ev;
+  ['morning','abc','surf','evening','weekly'].forEach(k=>{const b=document.getElementById('badge-'+k);if(b)b.textContent=get(k).length;});
+  const todayM=get('morning').filter(e=>e.date===todayStr).length>0;
+  const todayE=get('evening').filter(e=>e.date===todayStr).length>0;
+  const done=[todayM,a>0,s>0,todayE].filter(Boolean).length;
+  const pct=Math.round((done/4)*100);
+  document.getElementById('ringCircle').style.strokeDashoffset=175.9-(175.9*pct/100);
+  document.getElementById('ringPct').textContent=pct+'%';
+  document.getElementById('progressBars').innerHTML=[{l:'Mañana',v:todayM?100:0},{l:'ABC',v:Math.min(a*25,100)},{l:'Surfeo',v:Math.min(s*25,100)},{l:'Noche',v:todayE?100:0}].map(b=>`<div class="p-bar-row"><div class="p-lbl">${b.l}</div><div class="p-track"><div class="p-fill" style="width:${b.v}%"></div></div></div>`).join('');
+}
+
+// ── PROGRESS CHARTS ───────────────────────────────────────────
+let currentPeriod=7;
+function setPeriod(days,btn){currentPeriod=days;document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderProgress();}
+function renderProgress(){renderInsight();renderStreaks();renderHeatmap();renderBarChart();renderLineChart();renderDonut();}
+function daysAgo(n){const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().split('T')[0];}
+function shortDate(str){if(!str)return'';const d=new Date(str+'T00:00:00');return d.toLocaleDateString('es-ES',{day:'numeric',month:'short'});}
+
+function renderInsight(){
+  const surf=get('surf').filter(e=>e.dt&&e.dt.slice(0,10)>=daysAgo(currentPeriod));
+  const avg=surf.length?(surf.reduce((s,e)=>s+Number(e.intensity||5),0)/surf.length).toFixed(1):null;
+  const mC=get('morning').filter(e=>e.date>=daysAgo(currentPeriod)).length;
+  const eC=get('evening').filter(e=>e.date>=daysAgo(currentPeriod)).length;
+  const aC=get('abc').filter(e=>e.dt&&e.dt.slice(0,10)>=daysAgo(currentPeriod)).length;
+  const total=mC+eC+surf.length+aC;
+  let icon='💡',title='',text='';
+  if(total===0){icon='🌱';title='¡Empezá tu registro!';text='Aún no hay datos. Completá tus primeras actividades para ver tu progreso aquí.';}
+  else if(avg!==null&&Number(avg)<=4){icon='🎉';title='¡Excelente control!';text=`Intensidad promedio ${avg}/10 en ${currentPeriod} días. ¡Estás manejando muy bien los impulsos!`;}
+  else if(avg!==null&&Number(avg)>=7){icon='💪';title='Momento desafiante';text=`Intensidad promedio de ${avg}/10. Recordá usar la técnica de surfeo y respiración profunda.`;}
+  else{icon='📊';title=`${total} actividades en ${currentPeriod} días`;text=`${mC} rituales matutinos y ${eC} reflexiones. ¡Seguí así!`;}
+  document.getElementById('insightCard').innerHTML=`<div class="insight-card"><div class="insight-icon">${icon}</div><div class="insight-title">${title}</div><div class="insight-text">${text}</div></div>`;
+}
+function renderStreaks(){
+  const allDates=new Set([...get('morning').map(e=>e.date),...get('evening').map(e=>e.date),...get('abc').map(e=>e.dt&&e.dt.slice(0,10)),...get('surf').map(e=>e.dt&&e.dt.slice(0,10))].filter(Boolean));
+  let streak=0;for(let i=0;i<=365;i++){if(allDates.has(daysAgo(i)))streak++;else break;}
+  const pDays=[...allDates].filter(d=>d>=daysAgo(currentPeriod)).length;
+  const tot=get('morning').length+get('abc').length+get('surf').length+get('evening').length+get('weekly').length;
+  document.getElementById('streakRow').innerHTML=`<div class="streak-tile"><div class="streak-num">${streak}</div><div class="streak-lbl">Días seguidos</div></div><div class="streak-tile"><div class="streak-num">${pDays}</div><div class="streak-lbl">Días activos (${currentPeriod}d)</div></div><div class="streak-tile"><div class="streak-num">${tot}</div><div class="streak-lbl">Registros totales</div></div>`;
+}
+function renderHeatmap(){
+  const days=28,map={};
+  for(let i=0;i<days;i++){const d=daysAgo(days-1-i);map[d]=0;}
+  [...get('morning').map(e=>e.date),...get('evening').map(e=>e.date),...get('abc').map(e=>e.dt&&e.dt.slice(0,10)),...get('surf').map(e=>e.dt&&e.dt.slice(0,10))].forEach(d=>{if(d&&map.hasOwnProperty(d))map[d]++;});
+  const dn=['Do','Lu','Ma','Mi','Ju','Vi','Sá'],cols={Do:[],Lu:[],Ma:[],Mi:[],Ju:[],Vi:[],Sá:[]};
+  Object.keys(map).forEach(d=>{cols[dn[new Date(d+'T00:00:00').getDay()]].push({date:d,count:map[d]});});
+  const maxV=Math.max(...Object.values(map),1);
+  const lvl=c=>{if(c===0)return'hm-0';const r=c/maxV;return r<=.25?'hm-1':r<=.5?'hm-2':r<=.75?'hm-3':'hm-4';};
+  document.getElementById('heatmapGrid').innerHTML=dn.map(n=>`<div class="hm-col"><div class="hm-day-lbl">${n}</div>${(cols[n]||[]).map(({date,count})=>`<div class="hm-cell ${lvl(count)}" title="${date}: ${count}"></div>`).join('')}</div>`).join('');
+}
+function renderBarChart(){
+  const days=currentPeriod,dateList=Array.from({length:days},(_,i)=>daysAgo(days-1-i)),map={};
+  dateList.forEach(d=>map[d]=0);
+  [...get('morning').map(e=>e.date),...get('evening').map(e=>e.date),...get('abc').map(e=>e.dt&&e.dt.slice(0,10)),...get('surf').map(e=>e.dt&&e.dt.slice(0,10))].forEach(d=>{if(d&&map.hasOwnProperty(d))map[d]++;});
+  const vals=dateList.map(d=>map[d]),maxV=Math.max(...vals,1);
+  const step=days<=7?1:days<=14?2:5;
+  document.getElementById('barChart').innerHTML=dateList.map((d,i)=>{const v=vals[i];const h=Math.max((v/maxV)*95,v>0?8:3);return`<div class="bar-wrap"><div class="bar-col" style="height:${h}px;">${v>0?`<span class="bar-val">${v}</span>`:''}</div></div>`;}).join('');
+  document.getElementById('barLabels').innerHTML=dateList.map((d,i)=>{const show=i%step===0||i===dateList.length-1;return`<span style="font-size:8px;font-weight:800;color:var(--muted);flex:1;text-align:center;">${show?shortDate(d):''}</span>`;}).join('');
+}
+function renderLineChart(){
+  const surf=get('surf').filter(e=>e.dt&&e.dt.slice(0,10)>=daysAgo(currentPeriod)).sort((a,b)=>a.dt<b.dt?-1:1);
+  const svg=document.getElementById('lineChart');
+  const W=300,H=110,pad={t:18,b:22,l:26,r:10};const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  if(surf.length<2){svg.innerHTML=`<text x="${W/2}" y="${H/2}" text-anchor="middle" style="font-size:11px;fill:var(--muted);font-family:Nunito,sans-serif;">Sin suficientes datos aún</text>`;return;}
+  const vals=surf.map(e=>Number(e.intensity||5)),dates=surf.map(e=>e.dt.slice(0,10));
+  const xS=i=>pad.l+(i/(vals.length-1))*cW,yS=v=>pad.t+cH-((v-1)/9)*cH;
+  let grid='';for(let v=2;v<=10;v+=2){const y=yS(v);grid+=`<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="var(--border)" stroke-width="1"/><text x="${pad.l-4}" y="${y+3}" text-anchor="end" style="font-size:8px;fill:var(--muted);font-family:Nunito,sans-serif;font-weight:700">${v}</text>`;}
+  const pts=vals.map((v,i)=>`${xS(i)},${yS(v)}`);
+  const pathD='M'+pts.join(' L'),areaD=`M${xS(0)},${yS(1)} L`+pts.join(' L')+` L${xS(vals.length-1)},${yS(1)} Z`;
+  const step=Math.max(1,Math.floor(vals.length/5));
+  const dots=vals.map((v,i)=>{const x=xS(i),y=yS(v);const show=i%step===0||i===vals.length-1;return`<circle cx="${x}" cy="${y}" r="4" fill="var(--teal)" stroke="#fff" stroke-width="2"/>${show?`<text x="${x}" y="${H-4}" text-anchor="middle" style="font-size:8px;fill:var(--muted);font-family:Nunito,sans-serif;font-weight:700">${shortDate(dates[i])}</text>`:''}`}).join('');
+  svg.innerHTML=`<defs><linearGradient id="lcGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0abf8c"/><stop offset="100%" stop-color="#0abf8c" stop-opacity="0"/></linearGradient></defs>${grid}<path d="${areaD}" fill="url(#lcGrad)" opacity=".25"/><path d="${pathD}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}`;
+}
+function renderDonut(){
+  const counts={'🌅 Matutino':get('morning').length,'📊 ABC':get('abc').length,'🌊 Surfeo':get('surf').length,'🌙 Noche':get('evening').length,'📈 Semanal':get('weekly').length};
+  const colors=['#0abf8c','#05c3de','#0891b2','#67e8d4','#a5f3fc'];
+  const total=Object.values(counts).reduce((s,v)=>s+v,0);
+  const svg=document.getElementById('donutChart'),legend=document.getElementById('donutLegend');
+  if(total===0){svg.innerHTML=`<circle cx="55" cy="55" r="40" fill="var(--mint)"/><text x="55" y="60" text-anchor="middle" style="font-size:11px;fill:var(--muted);font-family:Nunito">Sin datos</text>`;legend.innerHTML='';return;}
+  const cx=55,cy=55,r=38,ir=22;let startA=-Math.PI/2,paths='',legendHTML='';
+  Object.entries(counts).forEach(([label,val],i)=>{if(val===0)return;const angle=(val/total)*2*Math.PI,endA=startA+angle;const x1=cx+r*Math.cos(startA),y1=cy+r*Math.sin(startA),x2=cx+r*Math.cos(endA),y2=cy+r*Math.sin(endA);const ix1=cx+ir*Math.cos(startA),iy1=cy+ir*Math.sin(startA),ix2=cx+ir*Math.cos(endA),iy2=cy+ir*Math.sin(endA);const la=angle>Math.PI?1:0;paths+=`<path d="M${ix1},${iy1} L${x1},${y1} A${r},${r} 0 ${la},1 ${x2},${y2} L${ix2},${iy2} A${ir},${ir} 0 ${la},0 ${ix1},${iy1} Z" fill="${colors[i%colors.length]}" opacity=".9"/>`;legendHTML+=`<div class="legend-row"><div class="legend-dot" style="background:${colors[i%colors.length]}"></div><div class="legend-label">${label}</div><div class="legend-val">${val}</div></div>`;startA=endA;});
+  paths+=`<text x="${cx}" y="${cy-4}" text-anchor="middle" style="font-size:13px;font-weight:900;fill:var(--teal);font-family:Nunito,sans-serif">${total}</text><text x="${cx}" y="${cy+10}" text-anchor="middle" style="font-size:9px;fill:var(--muted);font-family:Nunito,sans-serif;font-weight:700">total</text>`;
+  svg.innerHTML=paths;legend.innerHTML=legendHTML;
+}
+
+// ── NOTIFICATIONS CHECK ───────────────────────────────────────
+function runNotifCheck(){scheduleNotifications();checkPendingNotifs();}
+setInterval(runNotifCheck, 60000);
+
+// ── PWA INSTALL LOGIC ─────────────────────────────────────────
+let deferredInstallPrompt = null;
+let swRegistration = null;
+let isInstalled = false;
+
+// Detect if already running as installed PWA
+function detectInstalled() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true ||
+         document.referrer.includes('android-app://');
+}
+
+// Detect platform for install instructions
+function getPlatformSteps() {
+  const ua = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(ua)) {
+    return `<strong>iPhone / iPad (Safari):</strong><br>
+    1. Tocá el botón <strong>Compartir</strong> 📤 en la barra inferior<br>
+    2. Deslizá y tocá <strong>"Agregar a pantalla de inicio"</strong> ＋<br>
+    3. Confirmá tocando <strong>"Agregar"</strong>`;
+  } else if (/android/.test(ua)) {
+    return `<strong>Android (Chrome):</strong><br>
+    1. Tocá el ícono de instalación que aparece en la barra de direcciones<br>
+    2. O tocá <strong>"Instalar ahora"</strong> abajo ↓<br>
+    3. Confirmá en el diálogo que aparece`;
+  } else if (/edg/.test(ua)) {
+    return `<strong>Edge (Windows/Mac):</strong><br>
+    1. Clic en el ícono <strong>＋</strong> en la barra de direcciones<br>
+    2. O Menú ··· → Aplicaciones → <strong>Instalar este sitio</strong>`;
+  } else {
+    return `<strong>Chrome / Brave (Desktop):</strong><br>
+    1. Clic en el ícono <strong>⊕</strong> en la barra de direcciones<br>
+    2. O tocá el botón <strong>"Instalar ahora"</strong> abajo ↓`;
+  }
+}
+
+function openInstallModal() {
+  const modal = document.getElementById('installModal');
+  modal.style.display = 'flex';
+  document.getElementById('installPlatformSteps').innerHTML = getPlatformSteps();
+  // Show native button only if prompt is available
+  const nativeBtn = document.getElementById('installNativeBtn');
+  nativeBtn.style.display = deferredInstallPrompt ? 'block' : 'none';
+}
+function closeInstallModal() {
+  document.getElementById('installModal').style.display = 'none';
+}
+
+// Native install prompt
+document.getElementById('installNativeBtn').addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  if (outcome === 'accepted') {
+    showToast('✅ ¡App instalada exitosamente! 🎉');
+    closeInstallModal();
+  }
+  deferredInstallPrompt = null;
+  document.getElementById('installNativeBtn').style.display = 'none';
+});
+
+// Close modal on backdrop click
+document.getElementById('installModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('installModal')) closeInstallModal();
+});
+
+// ════════════════════════════════════════════════════════════
+//  PWA BOOTSTRAP — SELF-CONTAINED
+// ════════════════════════════════════════════════════════════
+
+// ── ICON (SVG data URI, no archivo externo necesario) ─────────
+const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0abf8c"/><stop offset="100%" stop-color="#0891b2"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="url(#bg)"/><ellipse cx="205" cy="215" rx="98" ry="112" fill="rgba(255,255,255,.92)"/><ellipse cx="307" cy="215" rx="98" ry="112" fill="rgba(255,255,255,.86)"/><rect x="253" y="118" width="6" height="154" rx="3" fill="rgba(10,191,140,.65)"/><rect x="238" y="325" width="36" height="48" rx="10" fill="rgba(255,255,255,.78)"/><path d="M152 188 Q173 167 194 188M143 220 Q168 198 193 214M148 250 Q178 233 199 247" stroke="rgba(10,191,140,.5)" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M360 188 Q339 167 318 188M369 220 Q344 198 319 214M364 250 Q334 233 313 247" stroke="rgba(10,191,140,.5)" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="0" y="395" width="512" height="117" fill="rgba(0,0,0,.38)"/><text x="256" y="453" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="48" fill="white">Autocon.</text></svg>`;
+const ICON_URI = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ICON_SVG)));
+
+function injectIconLinks() {
+  const f = document.createElement('link');
+  f.rel = 'icon'; f.type = 'image/svg+xml'; f.href = ICON_URI;
+  document.head.appendChild(f);
+  const a = document.createElement('link');
+  a.rel = 'apple-touch-icon'; a.href = ICON_URI;
+  document.head.appendChild(a);
+}
+
+// ── MANIFEST (Blob URL — funciona en cualquier hosting HTTPS) ─
+function injectManifest() {
+  const m = {
+    name: "Autoconciencia y Control de Impulsos",
+    short_name: "Autoconciencia",
+    description: "Programa de autoconciencia y control de impulsos",
+    start_url: "./", scope: "./", display: "standalone",
+    background_color: "#0abf8c", theme_color: "#0abf8c",
+    orientation: "portrait-primary", lang: "es",
+    icons: [{ src: ICON_URI, sizes: "any", type: "image/svg+xml", purpose: "any maskable" }],
+    shortcuts: [
+      { name: "Ritual Matutino", url: "./#morning", icons: [{ src: ICON_URI, sizes: "96x96" }] },
+      { name: "Surfear Impulso", url: "./#surf",    icons: [{ src: ICON_URI, sizes: "96x96" }] }
+    ],
+    categories: ["health", "lifestyle"],
+    prefer_related_applications: false
+  };
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(new Blob([JSON.stringify(m)], { type: 'application/manifest+json' }));
+  document.head.appendChild(link);
+}
+
+// ── SERVICE WORKER ────────────────────────────────────────────
+
+async function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  // Inline SW code — no archivo externo necesario
+  const SW = `const C='ac-v7';
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([location.pathname]).catch(()=>{})).then(()=>self.skipWaiting()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',e=>{
+  if(e.request.method!=='GET')return;
+  e.respondWith(caches.match(e.request).then(cached=>{
+    const net=fetch(e.request).then(r=>{if(r&&r.status===200&&r.type!=='opaque')caches.open(C).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>cached||new Response('Offline',{status:503}));
+    return cached||net;
+  }));
+});
+self.addEventListener('push',e=>{const d=e.data?e.data.json():{title:'Autoconciencia',body:'Recordatorio'};e.waitUntil(self.registration.showNotification(d.title,{body:d.body,vibrate:[150,50,150]}));});
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.openWindow(location.pathname));});
+self.addEventListener('message',e=>{if(e.data==='SKIP_WAITING')self.skipWaiting();});`;
+  try {
+    const blob = new Blob([SW], {type:'text/javascript'});
+    const url  = URL.createObjectURL(blob);
+    swRegistration = await navigator.serviceWorker.register(url);
+    console.log('[PWA] ✅ SW inline registrado');
+  } catch(e1) {
+    try {
+      swRegistration = await navigator.serviceWorker.register('./service-worker.js');
+      console.log('[PWA] ✅ SW externo registrado');
+    } catch(e2) {
+      console.info('[PWA] SW no disponible (archivo local sin servidor)');
+      return;
+    }
+  }
+  if (!swRegistration) return;
+  swRegistration.addEventListener('updatefound', () => {
+    const nw = swRegistration.installing;
+    nw.addEventListener('statechange', () => {
+      if (nw.state === 'installed' && navigator.serviceWorker.controller)
+        document.getElementById('updateBanner').style.display = 'block';
+    });
+  });
+}
+
+function detectInstalled() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true;
+}
+
+function getPlatformSteps() {
+  const ua = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(ua)) {
+    return `<strong style="color:var(--teal)">iPhone / iPad — Safari:</strong><br>
+    1️⃣ Tocá el botón <strong>Compartir 📤</strong> (barra inferior)<br>
+    2️⃣ Deslizá y tocá <strong>"Agregar a pantalla de inicio" ＋</strong><br>
+    3️⃣ Tocá <strong>"Agregar"</strong> — ¡listo!`;
+  } else if (/android/.test(ua)) {
+    return `<strong style="color:var(--teal)">Android — Chrome:</strong><br>
+    1️⃣ Tocá <strong>"Instalar ahora"</strong> abajo ↓<br>
+    2️⃣ Confirmá en el diálogo del sistema<br>
+    3️⃣ El ícono 🧠 aparece en tu pantalla de inicio`;
+  } else if (/edg/.test(ua)) {
+    return `<strong style="color:var(--teal)">Microsoft Edge:</strong><br>
+    1️⃣ Clic en el ícono <strong>＋</strong> en la barra de URL<br>
+    2️⃣ O menú <strong>···</strong> → Aplicaciones → <strong>Instalar</strong>`;
+  } else {
+    return `<strong style="color:var(--teal)">Chrome / Brave:</strong><br>
+    1️⃣ Clic en el ícono <strong>⊕</strong> al final de la barra de URL<br>
+    2️⃣ O tocá <strong>"Instalar ahora"</strong> abajo ↓`;
+  }
+}
+
+function openInstallModal() {
+  const m = document.getElementById('installModal');
+  m.style.display = 'flex';
+  document.getElementById('installPlatformSteps').innerHTML = getPlatformSteps();
+  document.getElementById('installNativeBtn').style.display = deferredInstallPrompt ? 'block' : 'none';
+}
+function closeInstallModal() {
+  document.getElementById('installModal').style.display = 'none';
+}
+
+document.getElementById('installNativeBtn').addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  if (outcome === 'accepted') {
+    showToast('🎉 ¡App instalada! Buscala en tu pantalla de inicio.');
+    closeInstallModal();
+  }
+  document.getElementById('installNativeBtn').style.display = 'none';
+});
+
+document.getElementById('installModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('installModal')) closeInstallModal();
+});
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Show both the floating button and open modal immediately
+  const btn = document.getElementById('installBtn');
+  btn.style.display = 'flex';
+  console.log('[PWA] Install prompt ready ✅');
+});
+
+document.getElementById('installBtn').addEventListener('click', openInstallModal);
+
+window.addEventListener('appinstalled', () => {
+  isInstalled = true;
+  deferredInstallPrompt = null;
+  document.getElementById('installBtn').style.display = 'none';
+  showToast('🎉 ¡App instalada! Buscala en tu pantalla de inicio.');
+});
+
+// Auto show modal 20s after first visit (only if not installed)
+setTimeout(() => {
+  if (detectInstalled() || isInstalled) return;
+  const last = localStorage.getItem('_installPromptShown');
+  if (last && Date.now() - parseInt(last) < 3 * 24 * 60 * 60 * 1000) return;
+  localStorage.setItem('_installPromptShown', Date.now());
+  openInstallModal();
+}, 20000);
+
+// ── OFFLINE STATUS ────────────────────────────────────────────
+function updateOnlineStatus() {
+  document.getElementById('offlineBar').style.display = navigator.onLine ? 'none' : 'block';
+}
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+function applyUpdate() {
+  if (swRegistration && swRegistration.waiting) {
+    swRegistration.waiting.postMessage('SKIP_WAITING');
+  }
+  document.getElementById('updateBanner').style.display = 'none';
+  window.location.reload();
+}
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+window.onload = () => {
+  // Inject manifest & icons before anything else
+  injectIconLinks();
+  injectManifest();
+
+  document.getElementById('morningDate').value = todayStr;
+  document.getElementById('eveningDate').value = todayStr;
+  document.getElementById('weeklyDate').value  = todayStr;
+  loadAll();
+  updateStats();
+  initOnboarding();
+  renderRecommendations();
+  checkPendingNotifs();
+  updateOnlineStatus();
+  registerSW();
+
+  // Hash shortcuts
+  const hash = window.location.hash;
+  if (hash === '#morning') setTimeout(() => openModule('mod-morning'), 500);
+  if (hash === '#surf')    setTimeout(() => openModule('mod-surf'), 500);
+  if (hash === '#abc')     setTimeout(() => openModule('mod-abc'), 500);
+
+  // iOS Safari: show install button manually
+  const ua = navigator.userAgent.toLowerCase();
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isSafari = /safari/.test(ua) && !/crios|fxios|chrome/.test(ua);
+  if (isIOS && isSafari && !detectInstalled()) {
+    document.getElementById('installBtn').style.display = 'flex';
+  }
+};
+
+
+</script>
+</body>
+</html>
